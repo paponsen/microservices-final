@@ -21,7 +21,7 @@ import java.util.UUID;
 public class OrderService {
 
     private final OrderRepository orderRepository;
-    private final WebClient webClient;
+    private final WebClient.Builder webClientBuilder;
     public void placeOrder(OrderRequest orderRequest){
         Order order = new Order();
         order.setOrderNumber(UUID.randomUUID().toString());
@@ -37,8 +37,9 @@ public class OrderService {
         // before take the order check if it is in inventory
         // we do it by using web-client. web-client will call inventory-service to check if the ordered
         // item is available or not
-        InventoryResponse[] inventoryResponseArray = webClient.get()
-                .uri("http://localhost:8082/api/inventory",
+        // webClientBuilder is used for Load balancing
+        InventoryResponse[] inventoryResponseArray = webClientBuilder.build().get()
+                .uri("http://inventory-service/api/inventory",
                         uriBuilder -> uriBuilder.queryParam("skuCode", listSkuCode).build())
                 .retrieve()
                 .bodyToMono(InventoryResponse[].class)
