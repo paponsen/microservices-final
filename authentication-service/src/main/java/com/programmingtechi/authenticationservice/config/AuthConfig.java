@@ -49,7 +49,6 @@ public class AuthConfig {
         return new CustomUserDetailsService();
     }
 
-    @Bean
     public AuthenticationProvider authenticationProvider(){
         DaoAuthenticationProvider authenticationProvider =
                 new DaoAuthenticationProvider();
