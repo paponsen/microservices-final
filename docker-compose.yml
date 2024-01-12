@@ -46,18 +46,12 @@ services:
       - ./mongo-data:/data/db
 
   # Auth config with Mysql database
-  auth-mysql:
-    container_name: auth-mysql
-    image: mysql:5.7
+  dbservice:
+    image: mysql
     volumes:
       - ./mysql_auth_data:/var/lib/mysql
     environment:
       MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: auth-service
-      MYSQL_USER: root
-      MYSQL_PASSWORD: root
-    restart: always
-
 
   zookeeper:
     image: confluentinc/cp-zookeeper:7.0.1
@@ -124,8 +118,11 @@ services:
     pull_policy: always
     environment:
       - SPRING_PROFILES_ACTIVE=docker
+      - spring.datasource.url=jdbc:mysql://dbservice:3306/auth-service?createDatabaseIfNotExist=true
+      - spring.datasource.username=root
+      - spring.datasource.password=root
     depends_on:
-      - auth-mysql
+      - dbservice
       - discovery-service
       - api-gateway
 
@@ -140,6 +137,7 @@ services:
       - mongo
       - discovery-service
       - api-gateway
+      - authentication-service
 
   # Order-service Docker compose config
   order-service:
@@ -155,6 +153,7 @@ services:
       - zipkin
       - discovery-service
       - api-gateway
+      - authentication-service
 
   # Inventory-Service docker compose config
   inventory-service:
@@ -168,6 +167,7 @@ services:
       - postgres-inventory
       - discovery-service
       - api-gateway
+      - authentication-service
 
   # notification-service Docker compose config
   notification-service:
