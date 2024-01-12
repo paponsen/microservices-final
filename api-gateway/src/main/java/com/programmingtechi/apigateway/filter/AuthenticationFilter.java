@@ -40,6 +40,7 @@ public class AuthenticationFilter extends AbstractGatewayFilterFactory<Authentic
                     //REST call to AUTH service
                     //Security risk
                     //template.getForObject("http://authentication-service//validate?token="+authHeader,String.class);
+                    System.out.println("auth header: "+authHeader);
                     jwtUtil.validateToken(authHeader);
                 } catch (Exception e){
                     System.out.println("unauthorized access to application");

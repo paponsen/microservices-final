@@ -28,12 +28,17 @@ public class AuthController {
 
     @PostMapping("/token")
     public String getToken(@RequestBody AuthRequest authRequest){
+        System.out.println("User name:"+authRequest.getUserName());
+        System.out.println("User password:"+authRequest.getPassword());
         Authentication authenticate = authenticationManager.authenticate
                 (new UsernamePasswordAuthenticationToken(authRequest.getUserName(),authRequest.getPassword()));
         if(authenticate.isAuthenticated()){
-            return  authService.generateToken(authRequest.getUserName());
+                    String token = authService.generateToken(authRequest.getUserName());
+                    System.out.println("token: "+token);
+                    return token;
 
         } else {
+            System.out.println("Invalid access");
             throw new RuntimeException("Invalid access");
         }
     }

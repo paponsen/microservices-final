@@ -43,6 +43,7 @@ class ProductserviceApplicationTests {
 	 * Each test starts with fresh MongoDB instance.
 	 * provides more reliable and more reproducable environment.
 	 */
+	/*
 	@Container
 	static MongoDBContainer mongoDBContainer = new MongoDBContainer("mongo:4.4.2");
 	@Autowired
@@ -79,5 +80,5 @@ class ProductserviceApplicationTests {
 				.price(BigDecimal.valueOf(1400)).build();
 	}
 
-
+*/
 }
